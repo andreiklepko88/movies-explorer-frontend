@@ -1,0 +1,142 @@
+.footer {
+    box-sizing: border-box;
+    background-color: #FAFAFA;
+}
+
+.footer__wrapper {
+    max-width: 1140px;
+    min-height: 172px;
+    display: flex;
+    margin: 0 auto;
+    flex-direction: column;
+}
+
+.footer__info-container {
+    display: flex;
+    flex-direction: row;
+    min-height: 56px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #E8E8E8;
+    margin-top: auto;
+}
+
+.footer__info {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    color: #A0A0A0;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+}
+
+.footer__nav-container {
+    min-height: 55px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer__year {
+    margin: 0;
+    padding: 0;
+    color: #000;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+}
+
+.footer__nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.footer__nav-list {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    list-style: none;
+    flex-direction: row;
+    min-width: 182px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer__nav-link {
+    list-style: none;
+}
+
+.footer__nav-item {
+    margin: 0;
+    padding: 0;
+    color: #000;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    text-decoration: none;
+    transition: 0.4s ease;
+}
+
+.footer__nav-item:hover {
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+@media screen and (max-width: 1220px) {
+    .footer {
+        background-color: #fff;
+    }
+    
+    .footer__wrapper {
+        margin: 0 30px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .footer__wrapper {
+        margin: 0 10px;
+        min-height: 253px;
+    }
+
+    .footer__info-container {
+        min-height: 58px;
+    }
+
+    .footer__info {
+        font-size: 12px;
+        line-height: 15px;
+    }
+
+    .footer__nav-container {
+        min-height: 90px;
+        flex-direction: column-reverse;
+        justify-content: space-between;
+        align-items: center;
+        margin: 27px 0 20px 0;
+    }
+
+    .footer__nav-list {
+        flex-direction: column;
+        min-height: 45px;
+    }
+
+    .footer__year {
+        color: #A0A0A0;
+        font-size: 12px;
+        line-height: 15px;
+    }
+
+    .footer__nav-item {
+        font-size: 12px;
+        line-height: 15px;
+    }
+    
+
+}

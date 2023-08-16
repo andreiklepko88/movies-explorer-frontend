@@ -1,0 +1,230 @@
+.about {
+    box-sizing: border-box;
+    background-color: #FFF;
+    display: flex;
+    align-items: center;
+}
+
+.about__wrapper {
+    min-height: 608px;
+    max-width: 1140px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.about__header-wrapper {
+    width: 100%;
+    border-bottom: 1px solid #000;
+}
+
+.about__header {
+    margin: 0;
+    padding: 0;
+    color: #000;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 27px;
+    margin-bottom: 22px;
+    letter-spacing: -0.88px;
+}
+
+.about__steps {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 26px 40px;
+    margin-top: 70px;
+}
+
+.about__steps-header {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.about__steps-header-item {
+    margin: 0;
+    padding: 0;
+    color: #000;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: -0.8px;
+}
+
+.about__steps-text {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.about__steps-text-item {
+    margin: 0;
+    padding: 0;
+    color: #000;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.about__timing {
+    margin: 0;
+    padding: 0;
+    margin-top: 110px;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    gap: 13px 0;
+    width: 100%;
+}
+
+.about__timing-weeks-one {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background-color: #2BE080;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.about__timing-weeks-four {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background-color: #F2F2F2;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.about__timing-weeks-item {
+    margin: 0;
+    padding: 0;
+    color: #000;
+    text-align: center;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 17px;
+    margin: auto;
+}
+
+.about__timing-direction {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.about__timing-direction-item {
+    margin: 0;
+    padding: 0;
+    color: #A0A0A0;
+    text-align: center;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 17px;
+}
+
+@media screen and (max-width: 1200px) {
+    .about__wrapper {
+        min-height: 585px;
+        margin: 0 50px;
+    }
+
+    .about__steps-text-item {
+        font-size: 12px;
+        line-height: 18px;
+    }
+
+    .about__steps {
+        gap: 22px 30px;
+    }
+
+    .about__timing {
+        margin-top: 93px;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .about__wrapper {
+        min-height: 641px;
+        margin: 0 18px;
+    }
+
+    .about__header {
+        font-size: 18px;
+        line-height: 22px;
+        letter-spacing: -0.72px;
+        margin-bottom: 27px;
+    }
+
+    .about__steps-header-item {
+        font-size: 18px;
+        line-height: 22px;
+        letter-spacing: -0.72px;
+    }
+
+    .about__steps-text-item {
+        font-size: 11px;
+        line-height: 16px;
+    }
+
+    .steps-first {
+        order: 1;
+    }
+
+    .steps-second {
+        order: 2;
+        margin-bottom: 40px;
+    }
+
+    .steps-third {
+        order: 3;
+    }
+
+    .steps-fourth {
+        order: 4;
+    }
+
+    .about__steps {
+        margin-top: 60px;
+        grid-template-columns: 1fr;
+        gap: 16px 0;
+    }
+
+    .about__timing {
+        margin-top: 60px;
+        grid-template-columns: 1fr 1.84fr;
+        gap: 10px 0;
+    }
+
+    .about__timing-weeks-one {
+        height: 35px;
+    }
+
+    .about__timing-weeks-four {
+        height: 35px;
+    }
+
+    .about__timing-weeks-item {
+        font-size: 11px;
+        line-height: 13px;
+    }
+
+    .about__timing-direction-item {
+        font-size: 11px;
+        line-height: 13px;
+    }
+}
