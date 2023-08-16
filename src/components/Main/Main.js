@@ -13,7 +13,7 @@ function Main ({ isLoggedIn, handleMenuOpen, isSideMenuOpen }) {
             handleMenuOpen={ handleMenuOpen }
             isSideMenuOpen={ isSideMenuOpen }
             />
-            <main>
+            <main className="main">
                 <Promo/>
                 <AboutProject/>
                 <Techs/>

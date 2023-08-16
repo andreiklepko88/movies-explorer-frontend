@@ -13,15 +13,15 @@ function Register() {
                 <form className="register__form">
                     <fieldset className="register__fieldset">
                         <label className="register__label" for="name">Имя</label>
-                        <input className="register__input" id="name" name="register-name" value={"Виталий"} type="text" placeholder="Ваше имя"/>
+                        <input className="register__input" id="name" name="register-name" value={"Виталий"} type="text" placeholder="Ваше имя" required/>
                     </fieldset>
                     <fieldset className="register__fieldset">
                         <label className="register__label" for="email">E-mail</label>
-                        <input className="register__input" id="email" name="register-email" value={"pochta@yandex.ru"} type="email" placeholder="Ваш E-mail"/>
+                        <input className="register__input" id="email" name="register-email" value={"pochta@yandex.ru"} type="email" placeholder="Ваш E-mail" required/>
                     </fieldset>
                     <fieldset className="register__fieldset">
                         <label className="register__label" for="password">Пароль</label>
-                        <input className="register__input" id="password" name="register-password" value={"12345678910"} type="password" placeholder="Пароль"/>
+                        <input className="register__input" id="password" name="register-password" value={"12345678910"} type="password" placeholder="Пароль" required/>
                         <span className="register__error">Что-то пошло не так...</span>
                     </fieldset>                    
                 </form>

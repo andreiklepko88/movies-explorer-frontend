@@ -181,20 +181,20 @@
         line-height: 16px;
     }
 
-    .steps-first {
+    .about__steps-header_first {
         order: 1;
     }
 
-    .steps-second {
+    .about__steps-text_second {
         order: 2;
         margin-bottom: 40px;
     }
 
-    .steps-third {
+    .about__steps-header_third {
         order: 3;
     }
 
-    .steps-fourth {
+    .about__steps-text_fourth {
         order: 4;
     }
 

@@ -14,8 +14,10 @@ function SavedMovies({ handleCheckbox, isLoggedIn, handleMenuOpen }) {
         isLoggedIn={ isLoggedIn }
         handleMenuOpen={ handleMenuOpen }
         />
-        <SearchForm handleCheckbox={handleCheckbox} />
-        <SavedMoviesCardList/>
+        <main className="main">
+            <SearchForm handleCheckbox={handleCheckbox} />
+            <SavedMoviesCardList/>
+        </main>
         <Footer/>
         </>
         || 

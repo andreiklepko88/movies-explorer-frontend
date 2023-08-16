@@ -17,7 +17,7 @@ import pictureTwelve from "../../images/images for cards/card_pic_12.jpg";
 
 function MoviesCardList() {
     return (
-        <section className="movies__section">
+        <section className="movies">
             <ul className="movies__list">
                 <MoviesCard movieName={"33 слова о дизайне"} movieDuration={"1ч 47м"} buttonLogo={unsavedMovieLogo} moviePicture={pictureOne} />
                 <MoviesCard movieName={"33 слова о дизайне"} movieDuration={"1ч 47м"} buttonLogo={unsavedMovieLogo} moviePicture={pictureTwo} />

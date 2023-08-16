@@ -2,25 +2,25 @@ import "./Portfolio.css";
 
 function Portfolio() {
     return(
-    <nav className="about-me__portfolio">
-        <h3 className="about-me__portfolio-title">Портфолио</h3>
-        <ul className="about-me__portfolio-list">
-            <li className="about-me__portfolio-link">
-                <a className="about-me__portfolio-link-item" href="https://github.com/andreiklepko88/how-to-learn" target="_blank" rel="noreferrer">
-                    <span>Статичный сайт</span>
-                    <span className="about-me__portfolio-arrow">↗</span>
+    <nav className="portfolio">
+        <h3 className="portfolio__title">Портфолио</h3>
+        <ul className="portfolio__list">
+            <li className="portfolio__link">
+                <a className="portfolio__link-item" href="https://github.com/andreiklepko88/how-to-learn" target="_blank" rel="noreferrer">
+                    <span className="portfolio__site">Статичный сайт</span>
+                    <span className="portfolio__arrow">↗</span>
                 </a>
             </li>
-            <li className="about-me__portfolio-link portfolio-border">
-                <a className="about-me__portfolio-link-item" href="https://github.com/andreiklepko88/russian-travel" target="_blank" rel="noreferrer">
-                    <span>Адаптивный сайт</span>
-                    <span className="about-me__portfolio-arrow">↗</span>
+            <li className="portfolio__link portfolio__link_border">
+                <a className="portfolio__link-item" href="https://github.com/andreiklepko88/russian-travel" target="_blank" rel="noreferrer">
+                    <span className="portfolio__site">Адаптивный сайт</span>
+                    <span className="portfolio__arrow">↗</span>
                 </a>
             </li>
-            <li className="about-me__portfolio-link">
-                <a className="about-me__portfolio-link-item" href="https://github.com/andreiklepko88/react-mesto-api-full-gha" target="_blank" rel="noreferrer">
-                    <span>Одностраничное приложение</span>
-                    <span className="about-me__portfolio-arrow">↗</span>
+            <li className="portfolio__link">
+                <a className="portfolio__link-item" href="https://github.com/andreiklepko88/react-mesto-api-full-gha" target="_blank" rel="noreferrer">
+                    <span className="portfolio__site">Одностраничное приложение</span>
+                    <span className="portfolio__arrow">↗</span>
                 </a>
             </li>
         </ul>

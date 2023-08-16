@@ -70,6 +70,10 @@
     background: #F9F9F9;
 }
 
+.login__input:focus {
+    outline: 1px solid #FF6838;
+}
+
 .login__error {
     color: #EE3465;
     font-size: 10px;

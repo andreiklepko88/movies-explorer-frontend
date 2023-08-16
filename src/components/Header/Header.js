@@ -7,11 +7,13 @@ import headerProfilelogo from "../../images/icon__COLOR_icon-main-resized.svg";
 function Header({isLoggedIn, handleMenuOpen}) {
     const location = useLocation();
     const headerClassName = `header ${location.pathname === '/' && 'header_main'}`;
+    const movieTextColor = `header__authorized-link-item ${location.pathname === '/' ? 'header_text-main' : 'header_text' }`;
+    const profileTextColor = `header__profile-link-item ${location.pathname === '/' ? 'header_text-main' : 'header_text' }`
 
     return (
         <header className={headerClassName}>
-            <div className="header-wrapper">
-                <Link to="/">
+            <div className="header__wrapper">
+                <Link className="header__logo-link"  to="/">
                     <img className="header__logo" src={headerLogo} alt="логотип" />
                 </Link>
                 {!isLoggedIn ? (
@@ -27,11 +29,11 @@ function Header({isLoggedIn, handleMenuOpen}) {
                 <div className="header__container">
                     <nav className="header__authorized">
                         <ul className="header__authorized-movies">
-                            <li className="header__authorized-link"><NavLink className={'header__authorized-link-item'} to='/movies'>Фильмы</NavLink></li>
-                            <li className="header__authorized-link"><NavLink className={'header__authorized-link-item'} to='/saved-movies'>Сохранённые фильмы</NavLink></li>
+                            <li className="header__authorized-link"><NavLink className={movieTextColor} to='/movies'>Фильмы</NavLink></li>
+                            <li className="header__authorized-link"><NavLink className={movieTextColor} to='/saved-movies'>Сохранённые фильмы</NavLink></li>
                         </ul>
                         <ul className="header__authorized-profile">
-                            <li className="header__profile-link"><NavLink className={"header__profile-link-item"} to='/profile'>Аккаунт</NavLink></li>
+                            <li className="header__profile-link"><NavLink className={profileTextColor} to='/profile'>Аккаунт</NavLink></li>
                             <li className="header__profile-link-logo">
                                 <Link className="header__profile-logo-item" to='/profile'>
                                     <img className="header__profile-logo" alt="логотип профиля" src={ headerProfilelogo }/>
