@@ -114,11 +114,19 @@
     list-style: none;
 }
 
-.header_text-main {
+.header__authorized_text-main {
     color: #fff;
 }
 
-.header_text {
+.header__authorized_text {
+    color: #000;
+}
+
+.header__profile_text-main {
+    color: #fff;
+}
+
+.header__profile_text {
     color: #000;
 }
 

@@ -1,6 +1,6 @@
 import "./App.css";
 // import Preloader from "../Preloader/Preloader";
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from "react";
 import Main from "../Main/Main";
 import Movies from "../Movies/Movies";
@@ -10,12 +10,19 @@ import Register from "../Register/Register";
 import SavedMovies from "../SavedMovies/SavedMovies";
 import Profile from "../Profile/Profile";
 import SideMenu from "../SideMenu/SideMenu";
+import { mainApi } from "../../utils/MainApi";
+import { moviesApi } from "../../utils/MoviesApi";
+import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 function App() {
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isCheckboxOn, setIsCheckboxOn] = useState(false);
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState({});
 
   function handleCheckbox() {
     setIsCheckboxOn(!isCheckboxOn);

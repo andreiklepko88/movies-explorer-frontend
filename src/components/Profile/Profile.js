@@ -15,7 +15,7 @@ function Profile({ logOut, isLoggedIn, handleMenuOpen }) {
             isLoggedIn={isLoggedIn}
             handleMenuOpen={ handleMenuOpen }
             />
-            <main className="main">
+            <main>
                 <div className="profile">
                     <h2 className="profile__header">Привет, Виталий!</h2>
                     <div className="profile__form-wrapper">

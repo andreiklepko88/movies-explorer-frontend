@@ -1,4 +1,6 @@
-import "./MoviesCard.css"
+import "./MoviesCard.css";
+import { useContext } from "react";
+import CurrentUserContext from "../contexts/CurrentUserContext";
 
 function MoviesCard({ movieName, movieDuration, buttonLogo, moviePicture }) {
     return (
