@@ -12,14 +12,14 @@ function SideMenu({ isSideMenuOpen, onCloseMenu }) {
                 <button className="side-menu__close-button" type="button" aria-label="закрыть" onClick={onCloseMenu}/>
                 <nav className="side-menu__navigation">
                     <ul className="side-menu__nav-list">
-                        <li className="side-menu__nav-link"><NavLink className={"side-menu__nav-link-item"} to="/">Главная</NavLink></li>
-                        <li className="side-menu__nav-link"><NavLink className={"side-menu__nav-link-item"} to="/movies">Фильмы</NavLink></li>
-                        <li className="side-menu__nav-link"><NavLink className={"side-menu__nav-link-item"} to="/saved-movies">Сохранённые фильмы</NavLink></li>
+                        <li className="side-menu__nav-link"><NavLink className={"side-menu__nav-link-item"} onClick={onCloseMenu} to="/">Главная</NavLink></li>
+                        <li className="side-menu__nav-link"><NavLink className={"side-menu__nav-link-item"} onClick={onCloseMenu} to="/movies">Фильмы</NavLink></li>
+                        <li className="side-menu__nav-link"><NavLink className={"side-menu__nav-link-item"} onClick={onCloseMenu} to="/saved-movies">Сохранённые фильмы</NavLink></li>
                     </ul>
                     <ul className="side-menu__nav-profile">
-                        <li className="side-menu__profile-link"><NavLink className="side-menu__profile-link-item" to="/profile">Аккаунт</NavLink></li>
+                        <li className="side-menu__profile-link"><NavLink className="side-menu__profile-link-item" onClick={onCloseMenu} to="/profile">Аккаунт</NavLink></li>
                         <li className="side-menu__profile-link-logo">
-                            <Link className="side-menu__profile-logo-item" to='/profile'>
+                            <Link className="side-menu__profile-logo-item" onClick={onCloseMenu} to='/profile'>
                                 <img className="side-menu__profile-logo" alt="логотип профиля" src={ menuProfileLogo }/>
                             </Link>
                         </li>

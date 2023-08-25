@@ -16,16 +16,7 @@ function Header({ isLoggedIn, handleMenuOpen }) {
                 <Link className="header__logo-link" to="/">
                     <img className="header__logo" src={headerLogo} alt="логотип" />
                 </Link>
-                {!isLoggedIn ? (
-                    <div className="header__container">
-                        <nav className="header__unauthorized">
-                            <ul className="header__unauthorized-landing">
-                                <li className="header__unauthorized-signup"><Link className="header__unauthorized-signup-item" to='/signup'>Регистрация</Link></li>
-                                <li className="header__unauthorized-signin"><Link className="header__unauthorized-signin-item" to='/signin'>Войти</Link></li>
-                            </ul>
-                        </nav>
-                    </div>
-                ) : (
+                {isLoggedIn ? (
                     <div className="header__container">
                         <nav className="header__authorized">
                             <ul className="header__authorized-movies">
@@ -42,6 +33,15 @@ function Header({ isLoggedIn, handleMenuOpen }) {
                             </ul>
                         </nav>
                         <button className="header__burger-open" type="button" aria-label="открыть меню" onClick={handleMenuOpen} />
+                    </div>
+                ) : (
+                    <div className="header__container">
+                        <nav className="header__unauthorized">
+                            <ul className="header__unauthorized-landing">
+                                <li className="header__unauthorized-signup"><Link className="header__unauthorized-signup-item" to='/signup'>Регистрация</Link></li>
+                                <li className="header__unauthorized-signin"><Link className="header__unauthorized-signin-item" to='/signin'>Войти</Link></li>
+                            </ul>
+                        </nav>
                     </div>
                 )}
             </div>

@@ -18,9 +18,9 @@ class MainApi {
             method: httpMethods.post,
             headers: this._headers,
             body: JSON.stringify({
-                name,
-                password,
-                email
+                name,                
+                email,
+                password
             }),
             credentials: 'include',
         })
@@ -32,8 +32,8 @@ class MainApi {
             method: httpMethods.post,
             headers: this._headers,
             body: JSON.stringify({
-                password,
-                email
+                email,
+                password                
             }),
             credentials: 'include',
         })
@@ -69,7 +69,7 @@ class MainApi {
           .then(this._handleResponse);
     }
 
-    editProfile({ name, email }) {
+    editProfile( name, email ) {
         return fetch(`${this._baseUrl}/users/me`, {
           method: httpMethods.patch,
           headers: this._headers,
@@ -164,6 +164,6 @@ class MainApi {
 }
 
 export const mainApi = new MainApi({
-    baseUrl: 'http://localhost:3000',
+    baseUrl: 'https://api.bitfilms-andreikodev.nomoreparties.sbs',
     headers: {"Content-Type": "application/json"}
   })
