@@ -6,31 +6,61 @@ import Preloader from "../Preloader/Preloader";
 import SearchForm from "../SearchForm/SearchForm";
 import { useState } from "react";
 
-function SavedMovies({ handleCheckbox, isLoggedIn, handleMenuOpen, isChecked, isLoading, savedMovies, deleteMovie, saveMovie }) {
-    const[savedMoviesQuery, setSavedMoviesQuery] = useState("");
-    const[isSavedMoviesChecked, setSavedMoviesChecked] = useState(false);
+function SavedMovies({
+    isLoggedIn,
+    handleMenuOpen,
+    isLoading,
+    savedMovies,
+    deleteMovie,
+    setIsLoading,
+    savedQueryMovies,
+    setSavedQueryMovies,
+    getMovies,
+    setMovieError
+}) {
+    const [savedMoviesQuery, setSavedMoviesQuery] = useState("");
+    const [isSavedMoviesChecked, setSavedMoviesChecked] = useState(false);
+
 
     function handleSavedMoviesCheckbox() {
         setSavedMoviesChecked(!isSavedMoviesChecked);
     };
-    
+
     return (
         <section>
-            {isLoading ?
-                <Preloader />
-                :
-                <>
-                    <Header
-                        isLoggedIn={!isLoggedIn}
-                        handleMenuOpen={handleMenuOpen}
-                    />
-                    <main>
-                        <SearchForm handleCheckbox={handleSavedMoviesCheckbox} isChecked={isSavedMoviesChecked} query={savedMoviesQuery} setQuery={setSavedMoviesQuery}/>
-                        <SavedMoviesCardList savedMovies={savedMovies} deleteMovie={deleteMovie} query={savedMoviesQuery}/>
-                    </main>
-                    <Footer />
-                </>
-            }
+
+            <Header
+                isLoggedIn={isLoggedIn}
+                handleMenuOpen={handleMenuOpen}
+            />
+            <main>
+                {isLoading ?
+                    <Preloader />
+                    :
+                    <>
+                        <SearchForm
+                            savedMovies={savedMovies}
+                            handleCheckbox={handleSavedMoviesCheckbox}
+                            isChecked={isSavedMoviesChecked}
+                            query={savedMoviesQuery}
+                            setQuery={setSavedMoviesQuery}
+                            queryMovies={savedQueryMovies}
+                            setIsLoading={setIsLoading}
+                            setQueryMovies={setSavedQueryMovies}
+                            isLoading={isLoading}
+                            getMovies={getMovies}
+                            setMovieError={setMovieError}
+                        />
+                        <SavedMoviesCardList
+                            savedMovies={savedMovies}
+                            deleteMovie={deleteMovie}
+                            queryMovies={savedQueryMovies}
+                            query={savedMoviesQuery}
+                        />
+                    </>
+                }
+            </main>
+            <Footer />
         </section>
     )
 }

@@ -1,11 +1,13 @@
 import "./Header.css";
-import { useState } from "react";
+import { useContext } from "react";
 import { Link, useLocation, Routes, Route, NavLink } from 'react-router-dom';
 import headerLogo from "../../images/logo-header-resized.svg"
 import headerProfilelogo from "../../images/icon__COLOR_icon-main-resized.svg";
+import IsLoggedInContext from "../../contexts/IsLoggedInContext";
 
-function Header({ isLoggedIn, handleMenuOpen }) {
+function Header({ handleMenuOpen }) {
     const location = useLocation();
+    const isLoggedIn = useContext(IsLoggedInContext);
     const headerClassName = `header ${location.pathname === '/' && 'header_main'}`;
     const movieTextColor = `header__authorized-link-item ${location.pathname === '/' ? 'header__authorized_text-main' : 'header__authorized_text'}`;
     const profileTextColor = `header__profile-link-item ${location.pathname === '/' ? 'header__profile_text-main' : 'header__profile_text'}`

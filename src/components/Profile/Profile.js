@@ -12,15 +12,12 @@ function Profile({ logOut, isLoggedIn, handleMenuOpen, onEdit, onError }) {
         formState: { errors, isValid },
         handleSubmit,
         reset,
-        watch,
     } = useForm({
-        mode: "all",
+        mode: "onChange",
     });
 
     const [isEditingModeOn, setIsEditingModeOn] = useState(false);
     const currentUser = useContext(CurrentUserContext);
-    const watchName = watch("name", currentUser.name);
-    const watchEmail = watch("email", currentUser.email);
 
     const handleEditButton = () => {
         setIsEditingModeOn(true);
@@ -31,11 +28,10 @@ function Profile({ logOut, isLoggedIn, handleMenuOpen, onEdit, onError }) {
         onEdit(name, email);
         reset();
         setIsEditingModeOn(false);
-        alert(JSON.stringify(values));
     }
 
 
-    return(
+    return (
         <section>
             <Header
                 isLoggedIn={!isLoggedIn}
@@ -49,7 +45,7 @@ function Profile({ logOut, isLoggedIn, handleMenuOpen, onEdit, onError }) {
                             <fieldset className="profile__input-fieldset">
                                 <div className="profile__input-wrapper">
                                     <label className="profile__label-name" htmlFor="profile-name-input">Имя</label>
-                                    {watchName && <input className="profile__input-name"
+                                    <input className="profile__input-name"
                                         id="profile-name-input"
                                         name="name"
                                         type="text"
@@ -70,14 +66,14 @@ function Profile({ logOut, isLoggedIn, handleMenuOpen, onEdit, onError }) {
                                             },
                                             value: currentUser.name,
                                         })}
-                                    />}
+                                    />
                                 </div>
                                 <span className="profile__input-error">{errors?.name?.message || " "}</span>
                             </fieldset>
                             <fieldset className="profile__input-fieldset">
                                 <div className="profile__input-wrapper">
                                     <label className="profile__label-email" htmlFor="profile-email-input">E-mail</label>
-                                    {watchEmail && <input className="profile__input-email"
+                                    <input className="profile__input-email"
                                         id="profile-email-input"
                                         name="email"
                                         type="email"
@@ -94,7 +90,7 @@ function Profile({ logOut, isLoggedIn, handleMenuOpen, onEdit, onError }) {
                                             },
                                             value: currentUser.email,
                                         })}
-                                    />}
+                                    />
                                 </div>
                                 <span className="profile__input-error">{errors?.email?.message || " "}</span>
                             </fieldset>

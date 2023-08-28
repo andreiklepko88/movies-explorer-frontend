@@ -13,6 +13,7 @@ import SideMenu from "../SideMenu/SideMenu";
 import { mainApi } from "../../utils/MainApi";
 import { moviesApi } from "../../utils/MoviesApi";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
+import IsLoggedInContext from "../../contexts/IsLoggedInContext";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import InfoTooltipProfile from "../InfoTooltipProfile/InfoTooltipProfile";
 
@@ -22,11 +23,12 @@ function App() {
   const location = useLocation();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState({});
+  const [currentUser, setCurrentUser] = useState(null);
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(
-    localStorage.getItem('checkbox') ? localStorage.getItem('checkbox') : false);
+    localStorage.getItem('checkbox') ? JSON.parse(localStorage.getItem('checkbox')) : false);
   const [searchQuery, setSearchQuery] = useState(
-    localStorage.getItem('searchQuery') ? localStorage.getItem('searchQuery') : "");
+    localStorage.getItem('searchQuery') ? localStorage.getItem('searchQuery') : '');
+  // localStorage.getItem('searchQuery') ?? ''
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -36,11 +38,20 @@ function App() {
   const [registerServerError, setRegisterServerError] = useState(null);
   const [loginServerError, setLoginServerError] = useState(null);
   const [editProfileServerError, setEditProfileServerError] = useState(null);
+  const [movieError, setMovieError] = useState(null);
+
   const [movies, setMovies] = useState(
     localStorage.getItem('movies') ? JSON.parse(localStorage.getItem('movies')) : []);
   const [savedMovies, setSavedMovies] = useState(
     localStorage.getItem('savedMovies') ? JSON.parse(localStorage.getItem('savedMovies')) : []);
+  const [queryMovies, setQueryMovies] = useState(
+    localStorage.getItem('queryMovies') ? JSON.parse(localStorage.getItem('queryMovies')) : []);
+  const [savedQueryMovies, setSavedQueryMovies] = useState([]);
 
+  useEffect(() => {
+    checkJwtToken();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     if (location.pathname !== '/signin') {
@@ -49,6 +60,8 @@ function App() {
       setRegisterServerError(null);
     } else if (location.pathname !== '/profile') {
       setEditProfileServerError(null);
+    } else if (location.pathname !== '/movies') {
+      setMovieError(null);
     } else {
       return;
     }
@@ -56,21 +69,34 @@ function App() {
 
   useEffect(() => {
     isLoggedIn &&
-      getMovies();
       getSavedMovies();
   }, [isLoggedIn]);
 
-  //  useEffect(() => {
-  //  getUserInfo();
-  //  }, [])
+  useEffect(() => {
+      getMovies();
+  }, [location.pathname !== '/movies']);
+
 
   useEffect(() => {
-    localStorage.setItem('checkbox', isCheckboxChecked);
+    localStorage.setItem('checkbox', JSON.stringify(isCheckboxChecked));
   }, [isCheckboxChecked]);
 
   useEffect(() => {
     localStorage.setItem('searchQuery', searchQuery);
   }, [searchQuery]);
+
+  useEffect(() => {
+    console.log('effect')
+    localStorage.setItem('queryMovies', JSON.stringify(queryMovies));
+  }, [queryMovies]);
+
+  useEffect(() => {
+    localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
+  }, [savedMovies]);
+
+  useEffect(() => {
+    localStorage.setItem('movies', JSON.stringify(movies));
+  }, [movies])
 
   // useEffect(() => {
   //   alert(JSON.stringify(currentUser));
@@ -87,17 +113,16 @@ function App() {
       director: movie.director,
       duration: movie.duration,
       year: movie.year,
-      description: movie,
-      image: movie.image.url,
+      description: movie.description,
+      image: `https://api.nomoreparties.co${movie.image.url}`,
       trailerLink: movie.trailerLink,
-      thumbnail: movie.image.formats.thumbnail.url,
+      thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`,
       movieId: movie.id,
       nameRU: movie.nameRU,
       nameEN: movie.nameEN,
     })
       .then((savedMovie) => {
         setSavedMovies([savedMovie, ...savedMovies]);
-        localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
       })
       .catch((err) => {
         console.log(err);
@@ -108,28 +133,34 @@ function App() {
     mainApi.deleteMovie(id)
       .then(() => {
         setSavedMovies((savedMovies) => savedMovies.filter((c) => c._id !== id));
-        localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
-      });
-  }
-
-  function getMovies() {
-    const movies = localStorage.getItem('movies');
-    !movies && moviesApi.getMovies()
-      .then((movies) => {
-        setMovies(movies);
-        localStorage.setItem('movies', JSON.stringify(movies));
+        setSavedQueryMovies((savedQueryMovies) => savedQueryMovies.filter((c) => c._id !== id));
       })
       .catch((err) => {
         console.log(err);
       })
   }
 
+  async function getMovies() {
+    await moviesApi.getMovies()
+      .then((movies) => {
+        setMovies(movies);
+        setIsLoading(true);        
+        localStorage.setItem('movies', JSON.stringify(movies));        
+        setMovieError(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setMovieError(true);
+      })
+      .finally(() => setIsLoading(false))
+  }
+
   function getSavedMovies() {
-    const savedMovies = localStorage.getItem('savedMovies');
-    !savedMovies && mainApi.getMovies()
-      .then((resMovies) => {
-        setSavedMovies(resMovies);
-        localStorage.setItem('savedMovies', JSON.stringify(resMovies));
+    mainApi.getMovies()
+      .then((filteredMovies) => {
+        console.log(filteredMovies)
+        setSavedMovies(filteredMovies);
+        localStorage.setItem('savedMovies', JSON.stringify(filteredMovies));
       })
       .catch((err) => {
         console.log(err);
@@ -143,9 +174,10 @@ function App() {
         handleLogIn(email, password);
         setCurrentUser(newUser);
       })
-      .catch(err => {
+      .catch(async (err) => {
         console.log(err);
-        setRegisterServerError(err);
+        const { message } = await err.json();
+        setRegisterServerError(message);
         // setInfoTooltipOpen(true);
         // setRegisterSuccessful(false);
       })
@@ -157,11 +189,12 @@ function App() {
         setIsLoggedIn(true);
         setLoginServerError(null);
         navigate('/movies');
+        getUserInfo();
       })
-      .then(() => getUserInfo())
-      .catch((err) => {
+      .catch(async (err) => {
+        const { message } = await err.json();
         console.log(err);
-        setLoginServerError(err);
+        setLoginServerError(message);
       })
   }
 
@@ -173,11 +206,13 @@ function App() {
         setIsProfileInfoTooltipOpen(true);
         navigate('/movies');
       })
-      .catch((err) => {
+      .catch(async (err) => {
+        const { message } = await err.json();
         console.log(err);
-        setEditProfileServerError(err);
+        setEditProfileServerError(message);
         setIsEditProfileSuccessful(false);
         setIsProfileInfoTooltipOpen(true);
+
       })
   }
 
@@ -193,11 +228,17 @@ function App() {
     mainApi.logOut()
       .then(() => {
         setIsLoggedIn(false);
+        setIsCheckboxChecked(false);
+        setSearchQuery('');
+        setMovies([]);
+        setSavedMovies([]);
+        setQueryMovies([]);
         localStorage.clear();
         navigate('/');
       })
       .catch((err) => {
         console.log(err);
+        setIsLoggedIn(false);
       })
   }
 
@@ -210,11 +251,6 @@ function App() {
         console.log(err);
       })
   }
-
-  useEffect(() => {
-    checkJwtToken();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   function checkJwtToken() {
     mainApi.checkToken()
@@ -231,82 +267,93 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <div className="page">
-        <Routes>
-          <Route path="/" element={
-            <Main
-              isLoggedIn={isLoggedIn}
-              handleMenuOpen={handleSideMenuOpen}
-            />}
-          />
-          <Route path="/movies" element={
-            <ProtectedRoute
-              element={Movies}
-              isLoggedIn={isLoggedIn}
-              handleCheckbox={handleCheckbox}
-              isChecked={isCheckboxChecked}
-              handleMenuOpen={handleSideMenuOpen}
-              isLoading={isLoading}
-              savedMovies={savedMovies}
-              movies={movies}
-              query={searchQuery}
-              setQuery={setSearchQuery}
-              deleteMovie={deleteMovie}
-              saveMovie={saveMovie}
-            />}
-          />
-          <Route path="/saved-movies" element={
-            <ProtectedRoute
-              element={SavedMovies}
-              handleCheckbox={handleCheckbox}
-              isChecked={isCheckboxChecked}
-              isLoggedIn={isLoggedIn}
-              handleMenuOpen={handleSideMenuOpen}
-              isLoading={isLoading}
-              savedMovies={savedMovies}
-              deleteMovie={deleteMovie}
-              saveMovie={saveMovie}
-            />}
-          />
-          <Route path="/profile" element={
-            <ProtectedRoute
-              element={Profile}
-              handleMenuOpen={handleSideMenuOpen}
-              logOut={handleLogOut}
-              isLoggedIn={isLoggedIn}
-              onEdit={handleProfileEdit}
-              onError={editProfileServerError}
-            />}
-          />
-          <Route path="/signin" element={isLoggedIn ? <Navigate to="/" replace />
-            :
-            <Login
-              onSubmit={handleLogIn}
-              onError={loginServerError}
-            />}
-          />
-          <Route path="/signup" element={isLoggedIn ? <Navigate to="/" replace />
-            :
-            <Register
-              onSubmit={handleUserRegister}
-              onError={registerServerError}
-            />}
-          />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+      <IsLoggedInContext.Provider value={isLoggedIn}>
+        <div className="page">
+          <Routes>
+            <Route path="/" element={
+              <Main
+                isLoggedIn={isLoggedIn}
+                handleMenuOpen={handleSideMenuOpen}
+              />}
+            />
+            <Route path="/movies" element={
+              <ProtectedRoute
+                element={Movies}
+                isLoggedIn={isLoggedIn}
+                handleCheckbox={handleCheckbox}
+                isChecked={isCheckboxChecked}
+                handleMenuOpen={handleSideMenuOpen}
+                isLoading={isLoading}
+                savedMovies={savedMovies}
+                movies={movies}
+                query={searchQuery}
+                setQuery={setSearchQuery}
+                deleteMovie={deleteMovie}
+                saveMovie={saveMovie}
+                queryMovies={queryMovies}
+                setQueryMovies={setQueryMovies}
+                setIsLoading={setIsLoading}
+                setMovies={setMovies}
+                getMovies={getMovies}
+                movieError={movieError}
+                setMovieError={setMovieError}
+              />}
+            />
+            <Route path="/saved-movies" element={
+              <ProtectedRoute
+                element={SavedMovies}
+                isLoggedIn={isLoggedIn}
+                handleMenuOpen={handleSideMenuOpen}
+                isLoading={isLoading}
+                savedMovies={savedMovies}
+                deleteMovie={deleteMovie}
+                setIsLoading={setIsLoading}
+                savedQueryMovies={savedQueryMovies}
+                setSavedQueryMovies={setSavedQueryMovies}
+                getMovies={getMovies}
+                setMovieError={setMovieError}
+              />}
+            />
+            <Route path="/profile" element={
+              <ProtectedRoute
+                element={Profile}
+                handleMenuOpen={handleSideMenuOpen}
+                logOut={handleLogOut}
+                isLoggedIn={isLoggedIn}
+                onEdit={handleProfileEdit}
+                onError={editProfileServerError}
+              />}
+            />
+            <Route path="/signin" element={isLoggedIn ? <Navigate to="/" replace />
+              :
+              <Login
+                onSubmit={handleLogIn}
+                onError={loginServerError}
+              />}
+            />
+            <Route path="/signup" element={isLoggedIn ? <Navigate to="/" replace />
+              :
+              <Register
+                onSubmit={handleUserRegister}
+                onError={registerServerError}
+              />}
+            />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
 
-        <SideMenu
-          isSideMenuOpen={isSideMenuOpen}
-          onCloseMenu={closeAllPopups}
-        />
+          <SideMenu
+            isSideMenuOpen={isSideMenuOpen}
+            onCloseMenu={closeAllPopups}
+          />
 
-        <InfoTooltipProfile
-          isOpen={isProfileInfoTooltipOpen}
-          onClose={closeAllPopups}
-          isSuccessful={isEditProfileSuccessful}
-        />
+          <InfoTooltipProfile
+            isOpen={isProfileInfoTooltipOpen}
+            onClose={closeAllPopups}
+            isSuccessful={isEditProfileSuccessful}
+          />
 
-      </div>
+        </div>
+      </IsLoggedInContext.Provider>
     </CurrentUserContext.Provider>
   );
 }

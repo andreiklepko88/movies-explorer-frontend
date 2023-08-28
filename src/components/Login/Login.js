@@ -18,7 +18,6 @@ function Login({ onSubmit, onError }) {
         const { email, password } = values;
         onSubmit(email, password);
         reset();
-        alert(JSON.stringify(values));
     }
 
     return (

@@ -10,7 +10,7 @@ class MainApi {
         if (res.ok) {
         return res.json();
         }
-        return Promise.reject(`Ошибка: ${res.status}`)
+        return Promise.reject(res);
     };
 
     register(name, email, password) {
@@ -79,34 +79,11 @@ class MainApi {
           .then(this._handleResponse);
     };
 
-    saveMovie(
-        country,
-        director,
-        duration,
-        year,
-        description,
-        image,
-        trailerLink,
-        thumbnail,
-        movieId,
-        nameRU,
-        nameEN,) {
+    saveMovie(movie) {
         return fetch(`${this._baseUrl}/movies`, {
             method: httpMethods.post,
             headers: this._headers,
-            body: JSON.stringify({
-                country,
-                director,
-                duration,
-                year,
-                description,
-                image,
-                trailerLink,
-                thumbnail,
-                movieId,
-                nameRU,
-                nameEN,
-            }),
+            body: JSON.stringify(movie),
             credentials: 'include',
         })
             .then(this._handleResponse)
@@ -129,37 +106,6 @@ class MainApi {
         })
           .then(this._handleResponse);
     }
-
-    changeSaveMovieStatus(
-        id,
-        isSaved,         
-        country,
-        director,
-        duration,
-        year,
-        description,
-        image,
-        trailerLink,
-        thumbnail,
-        movieId,
-        nameRU,
-        nameEN,) {
-        return isSaved ?
-          this.saveMovie(        
-            country,
-            director,
-            duration,
-            year,
-            description,
-            image,
-            trailerLink,
-            thumbnail,
-            movieId,
-            nameRU,
-            nameEN,) 
-            : 
-            this.deleteMovie(id)
-      }
 
 }
 

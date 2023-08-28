@@ -1,26 +1,62 @@
 import "./SearchForm.css";
 import { useForm } from "react-hook-form";
+import { useLocation } from "react-router-dom";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
+import { useEffect } from "react";
 
-function SearchForm({ handleCheckbox, isChecked, query, setQuery }) {
+function SearchForm({
+    handleCheckbox,
+    isChecked,
+    query,
+    setQuery,
+    setQueryMovies,
+    setIsLoading,
+    movies,
+    savedMovies, 
+    getMovies,
+    setMovieError}) {
+
+    const location = useLocation();
     const {
         register,
-        formState: { errors, isValid },
+        formState: { errors },
         handleSubmit,
     } = useForm({
         mode: "onSubmit",
     });
 
+    const moviesForSearch = location.pathname === '/movies' ? movies : savedMovies;
 
-    function handleFormEditProfile(value) {
-        const {movie} = value;
+    useEffect(() => {
+        handleSubmit(handleFormSearch)();
+    }, [isChecked])
+
+    function handleFormSearch(value) {
+        setIsLoading(true);
+        if (location.pathname === '/movies') {
+            getMovies();
+            setMovieError(false);
+        }
+        const { movie } = value;
+        setQueryMovies(isChecked ?
+            moviesForSearch.filter((i) => {
+                return (i.nameRU.toLowerCase() || i.nameEN.toLowerCase()).includes(movie.toLowerCase())
+                    &&
+                    (i.duration <= 40);
+            })
+            :
+            moviesForSearch.filter((i) => {
+                return (i.nameRU.toLowerCase() || i.nameEN.toLowerCase()).includes(movie.toLowerCase());
+            })
+        );
         setQuery(movie);
+        setIsLoading(false);
     }
 
     return (
         <section className="search-movie">
-            <form className="search-movie__container" onSubmit={handleSubmit(handleFormEditProfile)}>
-                <label className="search-movie__logo" htmlFor="search-movie-input"/>
+            <form className="search-movie__container" onSubmit={handleSubmit(handleFormSearch)}>
+                <label className="search-movie__logo" htmlFor="search-movie-input" />
                 <input className="search-movie__input"
                     id="search-movie-input"
                     name="movie"
@@ -29,15 +65,12 @@ function SearchForm({ handleCheckbox, isChecked, query, setQuery }) {
                     {...register("movie", {
                         required: "Нужно ввести ключевое слово",
                         value: query,
-                        minLength: {
-                            value: 2,
-                            message: "Название должно быть не менее двух символов",}
                     })}
-                 />
+                />
                 <button className="search-movie__button" type="submit" aria-label="найти фильм" />
             </form>
             <span className="search-movie__input-error">{errors?.movie?.message || " "}</span>
-            <FilterCheckbox handleCheckbox={ handleCheckbox } isChecked={isChecked} />
+            <FilterCheckbox handleCheckbox={handleCheckbox} isChecked={isChecked} />
         </section>
     )
 }

@@ -17,7 +17,6 @@ function Register({ onSubmit, onError }) {
         const { name, email, password } = values;
         onSubmit(name, email, password);
         reset();
-        alert(JSON.stringify(values));
     }
 
     return (
