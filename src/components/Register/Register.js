@@ -2,13 +2,13 @@ import "./Register.css";
 import { useForm } from "react-hook-form";
 import Logo from "../../images/logo-header-resized.svg";
 import { Link } from "react-router-dom";
+import { regularExpressions } from "../../constants/constants";
 
 function Register({ onSubmit, onError }) {
     const {
         register,
         formState: { errors, isValid },
         handleSubmit,
-        reset,
     } = useForm({
         mode: "all",
     });
@@ -16,7 +16,6 @@ function Register({ onSubmit, onError }) {
     function handleFormRegister(values) {
         const { name, email, password } = values;
         onSubmit(name, email, password);
-        reset();
     }
 
     return (
@@ -41,7 +40,7 @@ function Register({ onSubmit, onError }) {
                                     message: "Имя должно быть не более тридцати букв",
                                 },
                                 pattern: {
-                                    value: /^[А-ЯA-Zё\s\_\h-]+$/i,
+                                    value: regularExpressions.name,
                                     message: "Допускается латиница, кириллица, пробел или дефис",
                                 },
                             })}
@@ -58,7 +57,7 @@ function Register({ onSubmit, onError }) {
                                     message: "Email должен быть не более пятидесяти символов",
                                 },
                                 pattern: {
-                                    value: /^((([0-9A-Za-z]{1}[-0-9A-z\.]{1,}[0-9A-Za-z]{1})|([0-9А-Яа-я]{1}[-0-9А-я\.]{1,}[0-9А-Яа-я]{1}))@([-A-Za-z]{1,}\.){1,2}[-A-Za-z]{2,})$/u,
+                                    value: regularExpressions.email,
                                     message: "Введите электронную почту",
                                 },
                             })}

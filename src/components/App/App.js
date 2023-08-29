@@ -11,7 +11,7 @@ import SavedMovies from "../SavedMovies/SavedMovies";
 import Profile from "../Profile/Profile";
 import SideMenu from "../SideMenu/SideMenu";
 import { mainApi } from "../../utils/MainApi";
-import { moviesApi } from "../../utils/MoviesApi";
+
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 import IsLoggedInContext from "../../contexts/IsLoggedInContext";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
@@ -38,10 +38,9 @@ function App() {
   const [registerServerError, setRegisterServerError] = useState(null);
   const [loginServerError, setLoginServerError] = useState(null);
   const [editProfileServerError, setEditProfileServerError] = useState(null);
-  const [movieError, setMovieError] = useState(null);
+  
 
-  const [movies, setMovies] = useState(
-    localStorage.getItem('movies') ? JSON.parse(localStorage.getItem('movies')) : []);
+  
   const [savedMovies, setSavedMovies] = useState(
     localStorage.getItem('savedMovies') ? JSON.parse(localStorage.getItem('savedMovies')) : []);
   const [queryMovies, setQueryMovies] = useState(
@@ -61,7 +60,7 @@ function App() {
     } else if (location.pathname !== '/profile') {
       setEditProfileServerError(null);
     } else if (location.pathname !== '/movies') {
-      setMovieError(null);
+      // setMovieError(null);
     } else {
       return;
     }
@@ -72,10 +71,9 @@ function App() {
       getSavedMovies();
   }, [isLoggedIn]);
 
-  useEffect(() => {
-      getMovies();
-  }, [location.pathname !== '/movies']);
-
+  // useEffect(() => {
+  //     getMovies();
+  // }, [location.pathname === '/movies']);
 
   useEffect(() => {
     localStorage.setItem('checkbox', JSON.stringify(isCheckboxChecked));
@@ -94,13 +92,7 @@ function App() {
     localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
   }, [savedMovies]);
 
-  useEffect(() => {
-    localStorage.setItem('movies', JSON.stringify(movies));
-  }, [movies])
 
-  // useEffect(() => {
-  //   alert(JSON.stringify(currentUser));
-  // }, [])
 
   function closeAllPopups() {
     setIsSideMenuOpen(false);
@@ -140,20 +132,7 @@ function App() {
       })
   }
 
-  async function getMovies() {
-    await moviesApi.getMovies()
-      .then((movies) => {
-        setMovies(movies);
-        setIsLoading(true);        
-        localStorage.setItem('movies', JSON.stringify(movies));        
-        setMovieError(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setMovieError(true);
-      })
-      .finally(() => setIsLoading(false))
-  }
+  
 
   function getSavedMovies() {
     mainApi.getMovies()
@@ -204,7 +183,6 @@ function App() {
         setCurrentUser(user);
         setIsEditProfileSuccessful(true);
         setIsProfileInfoTooltipOpen(true);
-        navigate('/movies');
       })
       .catch(async (err) => {
         const { message } = await err.json();
@@ -230,7 +208,8 @@ function App() {
         setIsLoggedIn(false);
         setIsCheckboxChecked(false);
         setSearchQuery('');
-        setMovies([]);
+        // setMovies([]);
+        localStorage.removeItem('movies')
         setSavedMovies([]);
         setQueryMovies([]);
         localStorage.clear();
@@ -285,7 +264,7 @@ function App() {
                 handleMenuOpen={handleSideMenuOpen}
                 isLoading={isLoading}
                 savedMovies={savedMovies}
-                movies={movies}
+                // movies={movies}
                 query={searchQuery}
                 setQuery={setSearchQuery}
                 deleteMovie={deleteMovie}
@@ -293,10 +272,10 @@ function App() {
                 queryMovies={queryMovies}
                 setQueryMovies={setQueryMovies}
                 setIsLoading={setIsLoading}
-                setMovies={setMovies}
-                getMovies={getMovies}
-                movieError={movieError}
-                setMovieError={setMovieError}
+                // setMovies={setMovies}
+                // getMovies={getMainMovies}
+                // movieError={movieError}
+                // setMovieError={setMovieError}
               />}
             />
             <Route path="/saved-movies" element={
@@ -310,8 +289,8 @@ function App() {
                 setIsLoading={setIsLoading}
                 savedQueryMovies={savedQueryMovies}
                 setSavedQueryMovies={setSavedQueryMovies}
-                getMovies={getMovies}
-                setMovieError={setMovieError}
+                // getMovies={getMainMovies}
+                setMovieError={() => {}}
               />}
             />
             <Route path="/profile" element={

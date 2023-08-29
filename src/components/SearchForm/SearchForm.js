@@ -13,8 +13,7 @@ function SearchForm({
     setIsLoading,
     movies,
     savedMovies, 
-    getMovies,
-    setMovieError}) {
+    onSubmit}) {
 
     const location = useLocation();
     const {
@@ -25,19 +24,22 @@ function SearchForm({
         mode: "onSubmit",
     });
 
-    const moviesForSearch = location.pathname === '/movies' ? movies : savedMovies;
+    // useEffect(() => {
+    //     handleSubmit(handleFormSearch)();
+    // }, [isChecked])
 
-    useEffect(() => {
-        handleSubmit(handleFormSearch)();
-    }, [isChecked])
-
-    function handleFormSearch(value) {
+    async function handleFormSearch(value) {
         setIsLoading(true);
+
         if (location.pathname === '/movies') {
-            getMovies();
-            setMovieError(false);
+            await onSubmit()
         }
+
         const { movie } = value;
+        
+        const moviesForSearch = location.pathname === '/movies' ? movies : savedMovies;
+        console.log(moviesForSearch);
+
         setQueryMovies(isChecked ?
             moviesForSearch.filter((i) => {
                 return (i.nameRU.toLowerCase() || i.nameEN.toLowerCase()).includes(movie.toLowerCase())

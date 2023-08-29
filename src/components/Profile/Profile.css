@@ -151,12 +151,19 @@
     transition: 0.4s ease;
     padding: 0;
     margin: 0 auto;
+    cursor: pointer;
 }
 
 .profile__save-button:disabled {
     color: #C2C2C2;
     background-color: #F8F8F8;
 }
+
+.profile__save-button:disabled:hover {
+    opacity: 1;
+    cursor: auto;
+}
+
 
 .profile__button-container {
     min-height: 48px;

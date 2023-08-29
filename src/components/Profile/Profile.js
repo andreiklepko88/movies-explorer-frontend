@@ -4,32 +4,44 @@ import { useContext } from "react";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 import Header from "../Header/Header";
 import { useState } from "react";
+import { regularExpressions } from "../../constants/constants";
 
 
 function Profile({ logOut, isLoggedIn, handleMenuOpen, onEdit, onError }) {
+    const currentUser = useContext(CurrentUserContext);
     const {
         register,
         formState: { errors, isValid },
         handleSubmit,
-        reset,
+        getValues,
     } = useForm({
         mode: "onChange",
     });
 
     const [isEditingModeOn, setIsEditingModeOn] = useState(false);
-    const currentUser = useContext(CurrentUserContext);
 
     const handleEditButton = () => {
         setIsEditingModeOn(true);
     }
 
+
     function handleFormEditProfile(values) {
         const { name, email } = values;
         onEdit(name, email);
-        reset();
         setIsEditingModeOn(false);
     }
 
+    function validateInputs(value) {
+        if (getValues('name') !== currentUser.name && getValues('email') !== currentUser.email) {
+            return true;
+        } else if (getValues('name') !== currentUser.name && getValues('email') === currentUser.email) {
+            return true;
+        } else if (getValues('name') === currentUser.name && getValues('email') !== currentUser.email) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     return (
         <section>
@@ -61,10 +73,11 @@ function Profile({ logOut, isLoggedIn, handleMenuOpen, onEdit, onError }) {
                                                 message: "Имя должно быть не более тридцати букв",
                                             },
                                             pattern: {
-                                                value: /^[А-ЯA-Zё\s\_\h-]+$/i,
+                                                value: regularExpressions.name,
                                                 message: "Допускается латиница, кириллица, пробел или дефис",
                                             },
                                             value: currentUser.name,
+                                            validate: value => validateInputs(value) || 'Введите новое имя',
                                         })}
                                     />
                                 </div>
@@ -85,10 +98,11 @@ function Profile({ logOut, isLoggedIn, handleMenuOpen, onEdit, onError }) {
                                                 message: "Email должен быть не более пятидесяти символов",
                                             },
                                             pattern: {
-                                                value: /^((([0-9A-Za-z]{1}[-0-9A-z\.]{1,}[0-9A-Za-z]{1})|([0-9А-Яа-я]{1}[-0-9А-я\.]{1,}[0-9А-Яа-я]{1}))@([-A-Za-z]{1,}\.){1,2}[-A-Za-z]{2,})$/u,
+                                                value: regularExpressions.email,
                                                 message: "Введите электронную почту",
                                             },
                                             value: currentUser.email,
+                                            validate: value => validateInputs(value) || 'Введите новый Email',
                                         })}
                                     />
                                 </div>

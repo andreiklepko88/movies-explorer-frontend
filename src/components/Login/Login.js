@@ -2,6 +2,7 @@ import "./Login.css";
 import { useForm } from "react-hook-form";
 import Logo from "../../images/logo-header-resized.svg";
 import { Link } from "react-router-dom";
+import { regularExpressions } from "../../constants/constants";
 
 function Login({ onSubmit, onError }) {
 
@@ -9,7 +10,6 @@ function Login({ onSubmit, onError }) {
         register,
         formState: { errors, isValid },
         handleSubmit,
-        reset,
     } = useForm({
         mode: "all",
     });
@@ -17,7 +17,6 @@ function Login({ onSubmit, onError }) {
     function handleFormLogin(values) {
         const { email, password } = values;
         onSubmit(email, password);
-        reset();
     }
 
     return (
@@ -38,7 +37,7 @@ function Login({ onSubmit, onError }) {
                                     message: "Email должен быть не более пятидесяти символов",
                                 },
                                 pattern: {
-                                    value: /^((([0-9A-Za-z]{1}[-0-9A-z\.]{1,}[0-9A-Za-z]{1})|([0-9А-Яа-я]{1}[-0-9А-я\.]{1,}[0-9А-Яа-я]{1}))@([-A-Za-z]{1,}\.){1,2}[-A-Za-z]{2,})$/u,
+                                    value: regularExpressions.email,
                                     message: "Введите электронную почту",
                                 },
                             })}

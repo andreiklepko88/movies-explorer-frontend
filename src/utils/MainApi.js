@@ -110,6 +110,6 @@ class MainApi {
 }
 
 export const mainApi = new MainApi({
-    baseUrl: 'https://api.bitfilms-andreikodev.nomoreparties.sbs',
+    baseUrl: 'http://localhost:4000',
     headers: {"Content-Type": "application/json"}
   })

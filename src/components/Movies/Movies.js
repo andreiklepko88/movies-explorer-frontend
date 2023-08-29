@@ -4,6 +4,8 @@ import Header from "../Header/Header";
 import Preloader from "../Preloader/Preloader";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import SearchForm from "../SearchForm/SearchForm";
+import { useEffect, useState } from "react";
+import { moviesApi } from "../../utils/MoviesApi";
 
 function Movies({
     handleCheckbox,
@@ -12,7 +14,7 @@ function Movies({
     isChecked,
     isLoading,
     savedMovies,
-    movies,
+    // movies,
     query,
     setQuery,
     deleteMovie,
@@ -20,11 +22,51 @@ function Movies({
     queryMovies,
     setQueryMovies,
     setIsLoading,
-    setMovies,
-    getMovies,
-    movieError,
-    setMovieError
+    // setMovies,
+    // getMovies,
+    // movieError,
+    // setMovieError
 }) {
+    const [movies, setMovies] = useState([]);
+    const [movieError, setMovieError] = useState(null);
+
+    useEffect(() => {
+        const storageMovies = localStorage.getItem('movies')
+        if (storageMovies) {
+            setMovies(JSON.parse(storageMovies))
+        } else {
+            localStorage.setItem('movies', JSON.stringify(movies)) // '[]'
+        }
+        console.log('effect')
+        //localStorage.setItem('movies', JSON.stringify(movies));
+    }, [])
+
+    async function getMainMovies() {
+        console.log('getMainMovies')
+        const moviesLocal = JSON.parse(localStorage.getItem('movies') || '[]'); // '[]'
+        if (!moviesLocal.length) {
+            try {
+                setIsLoading(true);
+                const movies = await moviesApi.getMovies();
+                console.log(movies);
+                setMovies(movies);
+                localStorage.setItem('movies', JSON.stringify(movies));
+                setMovieError(false);
+            } catch (err) {
+                console.log(err);
+                setMovieError(true);
+            }
+            setIsLoading(false);
+        }
+    }
+
+    function onSubmit() {
+        getMainMovies();
+        setMovieError(false);
+    }
+
+    console.log('movies')
+
 
     return (
         <section>
@@ -46,9 +88,10 @@ function Movies({
                             setIsLoading={setIsLoading}
                             movies={movies}
                             savedMovies={savedMovies}
-                            getMovies={getMovies}
+                            getMovies={getMainMovies}
                             setMovieError={setMovieError}
                             setMovies={setMovies}
+                            onSubmit={onSubmit}
                         />
 
                         <MoviesCardList
@@ -60,7 +103,7 @@ function Movies({
                             queryMovies={queryMovies}
                             setQueryMovies={setQueryMovies}
                             isChecked={isChecked}
-                            setIsLoading={setIsLoading}
+                            isLoading={isLoading}
                             setMovies={setMovies}
                             movieError={movieError}
                         />
