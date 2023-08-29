@@ -14,3 +14,5 @@ IP 62.84.121.16
 Frontend https://bitfilms-andreikodev.nomoreparties.sbs
 
 Backend https://api.bitfilms-andreikodev.nomoreparties.sbs
+
+Ссылка на pull-request https://github.com/andreiklepko88/movies-explorer-frontend/pull/2
