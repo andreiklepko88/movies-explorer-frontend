@@ -3,12 +3,12 @@ import MoviesCard from "../MoviesCard/MoviesCard";
 
 
 
-function SavedMoviesCardList({ savedMovies, deleteMovie, queryMovies, query }) {
-    const moviesForRender = query ? queryMovies : savedMovies;
+function SavedMoviesCardList({ savedMovies, deleteMovie, queryMovies, query, isLoading }) {
+    const savedFilms = query ? queryMovies : savedMovies
     return (
         <section className="saved-movies">
             <ul className="saved-movies__list">
-                { moviesForRender.map((movie) => 
+                {savedFilms.map((movie) =>
                     <MoviesCard
                     key={movie._id}
                     movie={movie}
@@ -17,6 +17,7 @@ function SavedMoviesCardList({ savedMovies, deleteMovie, queryMovies, query }) {
                     />
                 )}
             </ul>
+            {query && !isLoading && !queryMovies.length && <span>Ничего не найдено</span>}
         </section>
     )
 }

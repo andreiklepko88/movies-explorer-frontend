@@ -25,8 +25,6 @@ function SideMenu({ isSideMenuOpen, onCloseMenu }) {
                         </li>
                     </ul>
                 </nav>
-
-
             </div>
         </section>
     )

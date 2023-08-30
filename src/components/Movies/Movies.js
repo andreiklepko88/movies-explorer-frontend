@@ -6,6 +6,7 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import SearchForm from "../SearchForm/SearchForm";
 import { useEffect, useState } from "react";
 import { moviesApi } from "../../utils/MoviesApi";
+import { shortFilm } from "../../constants/constants";
 
 function Movies({
     handleCheckbox,
@@ -14,7 +15,6 @@ function Movies({
     isChecked,
     isLoading,
     savedMovies,
-    // movies,
     query,
     setQuery,
     deleteMovie,
@@ -22,10 +22,6 @@ function Movies({
     queryMovies,
     setQueryMovies,
     setIsLoading,
-    // setMovies,
-    // getMovies,
-    // movieError,
-    // setMovieError
 }) {
     const [movies, setMovies] = useState([]);
     const [movieError, setMovieError] = useState(null);
@@ -37,36 +33,39 @@ function Movies({
         } else {
             localStorage.setItem('movies', JSON.stringify(movies)) // '[]'
         }
-        console.log('effect')
-        //localStorage.setItem('movies', JSON.stringify(movies));
     }, [])
 
+    useEffect(() => {
+        setQueryMovies(isChecked ?
+            movies.filter((movie) => {
+                return (movie.nameRU.toLowerCase() || movie.nameEN.toLowerCase()).includes(query.toLowerCase())
+                    &&
+                    (movie.duration <= shortFilm);
+            })
+            :
+            movies.filter((movie) => {
+                return (movie.nameRU.toLowerCase() || movie.nameEN.toLowerCase()).includes(query.toLowerCase());
+            })
+        );
+    },[isChecked, movies])
+
     async function getMainMovies() {
-        console.log('getMainMovies')
-        const moviesLocal = JSON.parse(localStorage.getItem('movies') || '[]'); // '[]'
-        if (!moviesLocal.length) {
             try {
+                const storageMovies = localStorage.getItem('movies')
                 setIsLoading(true);
-                const movies = await moviesApi.getMovies();
-                console.log(movies);
-                setMovies(movies);
-                localStorage.setItem('movies', JSON.stringify(movies));
+                if (!JSON.parse(storageMovies).length) {
+                    const allMovies = await moviesApi.getMovies();
+                    setMovies(allMovies);
+                    localStorage.setItem('movies', JSON.stringify(allMovies));
+                } else {
+                    setMovies(JSON.parse(storageMovies))
+                }
                 setMovieError(false);
             } catch (err) {
-                console.log(err);
                 setMovieError(true);
             }
             setIsLoading(false);
         }
-    }
-
-    function onSubmit() {
-        getMainMovies();
-        setMovieError(false);
-    }
-
-    console.log('movies')
-
 
     return (
         <section>
@@ -83,15 +82,11 @@ function Movies({
                             handleCheckbox={handleCheckbox}
                             isChecked={isChecked}
                             query={query}
-                            setQuery={setQuery}
-                            setQueryMovies={setQueryMovies}
-                            setIsLoading={setIsLoading}
-                            movies={movies}
-                            savedMovies={savedMovies}
+                            setQuery={setQuery}                            
+                            setIsLoading={setIsLoading}                                                   
                             getMovies={getMainMovies}
                             setMovieError={setMovieError}
                             setMovies={setMovies}
-                            onSubmit={onSubmit}
                         />
 
                         <MoviesCardList

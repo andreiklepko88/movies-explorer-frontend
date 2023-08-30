@@ -2,31 +2,26 @@ import "./MoviesCardList.css";
 import MoviesCard from "../MoviesCard/MoviesCard";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { useEffect, useState } from "react";
+import { cardCounts, minWidth } from "../../constants/constants";
 
 function MoviesCardList({ savedMovies, movies, deleteMovie, saveMovie, queryMovies,
     setQueryMovies, isChecked, isLoading, setMovies, query, movieError }) {
-    const LG_ROW_CARD_COUNT = 3;
-    const MD_ROW_CARD_COUNT = 2;
-    const SM_ROW_CARD_COUNT = 1;
 
-    const LG_INITIAL_CARD_COUNT = 12;
-    const MD_INITIAL_CARD_COUNT = 8;
-    const SM_INITIAL_CARD_COUNT = 5;
 
-    const isDesktop = useMediaQuery("(min-width: 1140px)");
-    const isTablet = useMediaQuery("(min-width: 708px)");
+    const isDesktop = useMediaQuery(minWidth.minDesktop);
+    const isTablet = useMediaQuery(minWidth.minTablet);
 
     const cardColumnCount = isDesktop
-        ? LG_ROW_CARD_COUNT
+        ? cardCounts.LG_ROW_CARD_COUNT
         : isTablet
-            ? MD_ROW_CARD_COUNT
-            : SM_ROW_CARD_COUNT;
+            ? cardCounts.MD_ROW_CARD_COUNT
+            : cardCounts.SM_ROW_CARD_COUNT;
 
     const initialCardCount = isDesktop
-        ? LG_INITIAL_CARD_COUNT
+        ? cardCounts.LG_INITIAL_CARD_COUNT
         : isTablet
-            ? MD_INITIAL_CARD_COUNT
-            : SM_INITIAL_CARD_COUNT;
+            ? cardCounts.MD_INITIAL_CARD_COUNT
+            : cardCounts.SM_INITIAL_CARD_COUNT;
 
     const [visibleCardCount, setVisibleCardCount] = useState(
         initialCardCount
@@ -45,17 +40,15 @@ function MoviesCardList({ savedMovies, movies, deleteMovie, saveMovie, queryMovi
 
     const calculateCardCount = () => {
         if (isDesktop) {
-            return setVisibleCardCount(visibleCardCount + LG_ROW_CARD_COUNT);
+            return setVisibleCardCount(visibleCardCount + cardCounts.LG_ROW_CARD_COUNT);
         }
 
         if (isTablet) {
-            return setVisibleCardCount(visibleCardCount + MD_ROW_CARD_COUNT);
+            return setVisibleCardCount(visibleCardCount + cardCounts.MD_ROW_CARD_COUNT);
         }
 
-        setVisibleCardCount(visibleCardCount + SM_ROW_CARD_COUNT + 1);
+        setVisibleCardCount(visibleCardCount + cardCounts.SM_ROW_CARD_COUNT + 1);
     };
-
-    console.log('queryMovies', queryMovies)
 
     return (
         <section className="movies">
@@ -72,7 +65,7 @@ function MoviesCardList({ savedMovies, movies, deleteMovie, saveMovie, queryMovi
                 }
             </ul>
             {query && movieError && <span>Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз.</span>}
-            {!isLoading && <span>Ничего не найдено</span>}
+            {query && !isLoading && !queryMovies.length && <span>Ничего не найдено</span>}
             {queryMovies.length > roundedVisibleCardCount && <button className="movies__loader-button" type="button" onClick={handleClick} aria-label="загрузить больше фильмов">Ещё</button>}
         </section>
     )

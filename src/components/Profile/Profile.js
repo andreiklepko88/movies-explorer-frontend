@@ -11,11 +11,11 @@ function Profile({ logOut, isLoggedIn, handleMenuOpen, onEdit, onError }) {
     const currentUser = useContext(CurrentUserContext);
     const {
         register,
-        formState: { errors, isValid },
+        formState: { errors, isValid, isSubmitting },
         handleSubmit,
         getValues,
     } = useForm({
-        mode: "onChange",
+        mode: "all",
     });
 
     const [isEditingModeOn, setIsEditingModeOn] = useState(false);
@@ -62,6 +62,7 @@ function Profile({ logOut, isLoggedIn, handleMenuOpen, onEdit, onError }) {
                                         name="name"
                                         type="text"
                                         placeholder="Ваше имя"
+                                        disabled={isSubmitting || !isEditingModeOn}
                                         {...register("name", {
                                             required: "Поле обязательно для заполнения",
                                             minLength: {
@@ -91,6 +92,7 @@ function Profile({ logOut, isLoggedIn, handleMenuOpen, onEdit, onError }) {
                                         name="email"
                                         type="email"
                                         placeholder="Ваш E-mail"
+                                        disabled={isSubmitting || !isEditingModeOn}
                                         {...register("email", {
                                             required: "Поле обязательно для заполнения",
                                             maxLength: {
@@ -111,7 +113,7 @@ function Profile({ logOut, isLoggedIn, handleMenuOpen, onEdit, onError }) {
                             <span className="profile__error">{onError ? `${onError}` : " "}</span>
                             {isEditingModeOn ? (
                                 <div className="profile__save-container">
-                                    <button className="profile__save-button" disabled={!isValid} type="submit" aria-label="сохранить изменения">Сохранить</button>
+                                    <button className="profile__save-button" disabled={isSubmitting || !isValid} type="submit" aria-label="сохранить изменения">Сохранить</button>
                                 </div>
                             ) : (
                                 <div className="profile__button-container">

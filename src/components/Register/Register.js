@@ -7,7 +7,7 @@ import { regularExpressions } from "../../constants/constants";
 function Register({ onSubmit, onError }) {
     const {
         register,
-        formState: { errors, isValid },
+        formState: { errors, isValid, isSubmitting },
         handleSubmit,
     } = useForm({
         mode: "all",
@@ -28,7 +28,13 @@ function Register({ onSubmit, onError }) {
                 <form className="register__form" onSubmit={handleSubmit(handleFormRegister)}>
                     <fieldset className="register__fieldset">
                         <label className="register__label" for="name">Имя</label>
-                        <input className="register__input" name="name" type="text" id="name" placeholder="Ваше имя"
+                        <input
+                        className="register__input"
+                        name="name"
+                        type="text"
+                        id="name"
+                        placeholder="Ваше имя"
+                        disabled={isSubmitting}
                             {...register("name", {
                                 required: "Поле обязательно для заполнения",
                                 minLength: {
@@ -49,7 +55,12 @@ function Register({ onSubmit, onError }) {
                     </fieldset>
                     <fieldset className="register__fieldset">
                         <label className="register__label" for="email">E-mail</label>
-                        <input className="register__input" id="email" name="email" type="email" placeholder="Ваш E-mail"
+                        <input 
+                        className="register__input"
+                        id="email" name="email"
+                        type="email"
+                        placeholder="Ваш E-mail"
+                        disabled={isSubmitting}
                             {...register("email", {
                                 required: "Поле обязательно для заполнения",
                                 maxLength: {
@@ -66,7 +77,13 @@ function Register({ onSubmit, onError }) {
                     </fieldset>
                     <fieldset className="register__fieldset">
                             <label className="register__label" for="password">Пароль</label>
-                            <input className="register__input" id="password" name="password" type="password" placeholder="Пароль"
+                            <input
+                            className="register__input"
+                            id="password"
+                            name="password"
+                            type="password"
+                            placeholder="Пароль"
+                            disabled={isSubmitting}
                                 {...register("password", {
                                     required: "Поле обязательно для заполнения",
                                     maxLength: {
@@ -78,7 +95,7 @@ function Register({ onSubmit, onError }) {
                         <span className="register__input-error">{errors?.password?.message || " "}</span>
                     </fieldset>
                     <span className="register__error">{onError ? `${onError}` : " "}</span>
-                    <button className="register__button" type="submit" disabled={!isValid} aria-label="Зарегистрироваться">Зарегистрироваться</button>
+                    <button className="register__button" type="submit" disabled={isSubmitting || !isValid} aria-label="Зарегистрироваться">Зарегистрироваться</button>
                 </form>
                 <div className="register__link-wrapper">
                     <span className="register__question">Уже зарегистрированы?</span>

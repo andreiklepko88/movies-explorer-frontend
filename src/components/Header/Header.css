@@ -175,7 +175,6 @@
 }
 
 .header__burger-open {
-    background-image: url(../../images/icon__burger-open.svg);
     background-repeat: no-repeat;
     background-size: cover;
     width: 44px;
@@ -187,6 +186,14 @@
     margin-top: 2px;
     display: none;
     transition: 0.4s ease;
+}
+
+.header__burger-open_other {
+    background-image: url(../../images/icon__burger-open.svg);
+}
+
+.header__burger-open_main {
+    background-image: url(../../images/icon__burger-main.svg);
 }
 
 .active {

@@ -8,7 +8,7 @@ function Login({ onSubmit, onError }) {
 
     const {
         register,
-        formState: { errors, isValid },
+        formState: { errors, isValid, isSubmitting },
         handleSubmit,
     } = useForm({
         mode: "all",
@@ -29,7 +29,12 @@ function Login({ onSubmit, onError }) {
                 <form className="login__form" onSubmit={handleSubmit(handleFormLogin)}>
                     <fieldset className="login__fieldset">
                         <label className="login__label" htmlFor="email">E-mail</label>
-                        <input className="login__input" id="email" name="login-email" type="email" placeholder="Ваш E-mail"
+                        <input
+                        className="login__input"
+                        id="email" name="login-email"
+                        type="email"
+                        placeholder="Ваш E-mail"
+                        disabled={isSubmitting}
                             {...register("email", {
                                 required: "Поле обязательно для заполнения",
                                 maxLength: {
@@ -46,7 +51,12 @@ function Login({ onSubmit, onError }) {
                     </fieldset>
                     <fieldset className="login__fieldset">
                         <label className="login__label" htmlFor="password">Пароль</label>
-                        <input className="login__input" id="password" name="login-password" type="password" placeholder="Пароль"
+                        <input
+                        className="login__input"
+                        id="password" name="login-password"
+                        type="password"
+                        placeholder="Пароль"
+                        disabled={isSubmitting}
                             {...register("password", {
                                 required: "Поле обязательно для заполнения",
                                 maxLength: {
@@ -58,7 +68,7 @@ function Login({ onSubmit, onError }) {
                         <span className="login__input-error">{errors?.password?.message || " "}</span>
                     </fieldset>
                     <span className="login__error">{onError ? `${onError}` : " "}</span>
-                    <button className="login__button" disabled={!isValid} type="submit" aria-label="авторизоваться">Войти</button>
+                    <button className="login__button" disabled={isSubmitting || !isValid} type="submit" aria-label="авторизоваться">Войти</button>
                 </form>
                 <div className="login__link-wrapper">
                     <span className="login__question">Ещё не зарегистрированы?</span>

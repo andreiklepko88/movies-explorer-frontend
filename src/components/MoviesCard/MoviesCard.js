@@ -1,10 +1,9 @@
 import "./MoviesCard.css";
-import { useContext } from "react";
-import CurrentUserContext from "../../contexts/CurrentUserContext";
 import { useLocation } from "react-router-dom";
 import savedButtonLogo from "../../images/saved-movie-logo.svg";
 import unSavedButtonLogo from "../../images/unsaved-movie-logo.svg";
 import deleteMovieLogo from "../../images/icon-delete-card.svg";
+import { minsInHour } from "../../constants/constants";
 
 
 function MoviesCard({ movie, saveMovie, deleteMovie, savedMovies }) {
@@ -13,7 +12,7 @@ function MoviesCard({ movie, saveMovie, deleteMovie, savedMovies }) {
     const imgLink = location.pathname === '/movies' ?
         `https://api.nomoreparties.co/${movie.image.url}`
         :
-        movie.image;
+        movie.image.url ? `https://api.nomoreparties.co/${movie.image.url}` : movie.image
 
     const isMovieSaved = location.pathname === '/movies' ?
         savedMovies.some((i) => i.movieId === movie.id)
@@ -26,9 +25,6 @@ function MoviesCard({ movie, saveMovie, deleteMovie, savedMovies }) {
         :
         deleteMovieLogo;
 
-
-    const currentUser = useContext(CurrentUserContext);
-
     const onButton = () => {
         if (location.pathname === '/movies') {
             return (isMovieSaved ? deleteMovie(movieId._id) : saveMovie(movie))
@@ -38,8 +34,8 @@ function MoviesCard({ movie, saveMovie, deleteMovie, savedMovies }) {
     };
 
     function getTimeFromMins(movieDuration) {
-        let hours = Math.trunc(movieDuration / 60);
-        let minutes = movieDuration % 60;
+        let hours = Math.trunc(movieDuration / minsInHour);
+        let minutes = movieDuration % minsInHour;
         if (hours === 0) {
             return minutes + 'м'
 

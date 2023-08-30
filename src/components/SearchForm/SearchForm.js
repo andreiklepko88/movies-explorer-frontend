@@ -1,21 +1,17 @@
 import "./SearchForm.css";
 import { useForm } from "react-hook-form";
-import { useLocation } from "react-router-dom";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
-import { useEffect } from "react";
 
 function SearchForm({
     handleCheckbox,
     isChecked,
     query,
-    setQuery,
-    setQueryMovies,
+    setQuery,    
     setIsLoading,
-    movies,
-    savedMovies, 
-    onSubmit}) {
+    getMovies,
+    }) {
 
-    const location = useLocation();
+    // const location = useLocation();
     const {
         register,
         formState: { errors },
@@ -24,34 +20,14 @@ function SearchForm({
         mode: "onSubmit",
     });
 
-    // useEffect(() => {
-    //     handleSubmit(handleFormSearch)();
-    // }, [isChecked])
-
     async function handleFormSearch(value) {
-        setIsLoading(true);
-
-        if (location.pathname === '/movies') {
-            await onSubmit()
+        try {
+            setIsLoading(true);
+            await setQuery(value.movie);
+            await getMovies();
+        } catch (e) {
+            setIsLoading(false);
         }
-
-        const { movie } = value;
-        
-        const moviesForSearch = location.pathname === '/movies' ? movies : savedMovies;
-        console.log(moviesForSearch);
-
-        setQueryMovies(isChecked ?
-            moviesForSearch.filter((i) => {
-                return (i.nameRU.toLowerCase() || i.nameEN.toLowerCase()).includes(movie.toLowerCase())
-                    &&
-                    (i.duration <= 40);
-            })
-            :
-            moviesForSearch.filter((i) => {
-                return (i.nameRU.toLowerCase() || i.nameEN.toLowerCase()).includes(movie.toLowerCase());
-            })
-        );
-        setQuery(movie);
         setIsLoading(false);
     }
 

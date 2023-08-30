@@ -1,7 +1,6 @@
 import "./AboutMe.css";
 import profilePhoto from "../../images/pic__photo_pic-resized.jpg";
 import Portfolio from "../Portfolio/Portfolio";
-import { Link } from "react-router-dom";
 
 function AboutMe() {
     return (

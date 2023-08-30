@@ -1,5 +1,4 @@
 import "./App.css";
-// import Preloader from "../Preloader/Preloader";
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from "react";
 import Main from "../Main/Main";
@@ -28,7 +27,6 @@ function App() {
     localStorage.getItem('checkbox') ? JSON.parse(localStorage.getItem('checkbox')) : false);
   const [searchQuery, setSearchQuery] = useState(
     localStorage.getItem('searchQuery') ? localStorage.getItem('searchQuery') : '');
-  // localStorage.getItem('searchQuery') ?? ''
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -38,9 +36,7 @@ function App() {
   const [registerServerError, setRegisterServerError] = useState(null);
   const [loginServerError, setLoginServerError] = useState(null);
   const [editProfileServerError, setEditProfileServerError] = useState(null);
-  
 
-  
   const [savedMovies, setSavedMovies] = useState(
     localStorage.getItem('savedMovies') ? JSON.parse(localStorage.getItem('savedMovies')) : []);
   const [queryMovies, setQueryMovies] = useState(
@@ -71,10 +67,6 @@ function App() {
       getSavedMovies();
   }, [isLoggedIn]);
 
-  // useEffect(() => {
-  //     getMovies();
-  // }, [location.pathname === '/movies']);
-
   useEffect(() => {
     localStorage.setItem('checkbox', JSON.stringify(isCheckboxChecked));
   }, [isCheckboxChecked]);
@@ -84,15 +76,12 @@ function App() {
   }, [searchQuery]);
 
   useEffect(() => {
-    console.log('effect')
     localStorage.setItem('queryMovies', JSON.stringify(queryMovies));
   }, [queryMovies]);
 
   useEffect(() => {
     localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
   }, [savedMovies]);
-
-
 
   function closeAllPopups() {
     setIsSideMenuOpen(false);
@@ -132,12 +121,9 @@ function App() {
       })
   }
 
-  
-
   function getSavedMovies() {
     mainApi.getMovies()
       .then((filteredMovies) => {
-        console.log(filteredMovies)
         setSavedMovies(filteredMovies);
         localStorage.setItem('savedMovies', JSON.stringify(filteredMovies));
       })
@@ -157,8 +143,6 @@ function App() {
         console.log(err);
         const { message } = await err.json();
         setRegisterServerError(message);
-        // setInfoTooltipOpen(true);
-        // setRegisterSuccessful(false);
       })
   }
 
@@ -190,7 +174,6 @@ function App() {
         setEditProfileServerError(message);
         setIsEditProfileSuccessful(false);
         setIsProfileInfoTooltipOpen(true);
-
       })
   }
 
@@ -208,7 +191,6 @@ function App() {
         setIsLoggedIn(false);
         setIsCheckboxChecked(false);
         setSearchQuery('');
-        // setMovies([]);
         localStorage.removeItem('movies')
         setSavedMovies([]);
         setQueryMovies([]);
@@ -264,7 +246,6 @@ function App() {
                 handleMenuOpen={handleSideMenuOpen}
                 isLoading={isLoading}
                 savedMovies={savedMovies}
-                // movies={movies}
                 query={searchQuery}
                 setQuery={setSearchQuery}
                 deleteMovie={deleteMovie}
@@ -272,10 +253,6 @@ function App() {
                 queryMovies={queryMovies}
                 setQueryMovies={setQueryMovies}
                 setIsLoading={setIsLoading}
-                // setMovies={setMovies}
-                // getMovies={getMainMovies}
-                // movieError={movieError}
-                // setMovieError={setMovieError}
               />}
             />
             <Route path="/saved-movies" element={
@@ -289,8 +266,8 @@ function App() {
                 setIsLoading={setIsLoading}
                 savedQueryMovies={savedQueryMovies}
                 setSavedQueryMovies={setSavedQueryMovies}
-                // getMovies={getMainMovies}
-                setMovieError={() => {}}
+                setMovieError={() => { }}
+                setSavedMovies={setSavedMovies}
               />}
             />
             <Route path="/profile" element={
