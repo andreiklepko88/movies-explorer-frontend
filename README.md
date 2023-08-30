@@ -9,7 +9,7 @@
 
 ## Ссылки на проект
 
-IP 62.84.121.16
+IP 158.160.18.209
 
 Frontend https://bitfilms-andreikodev.nomoreparties.sbs
 
