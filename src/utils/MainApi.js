@@ -106,7 +106,6 @@ class MainApi {
         })
             .then(this._handleResponse);
     }
-
 }
 
 export const mainApi = new MainApi({
