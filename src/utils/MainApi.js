@@ -110,5 +110,8 @@ class MainApi {
 
 export const mainApi = new MainApi({
     baseUrl: 'https://api.bitfilms-andreikodev.nomoreparties.sbs',
-    headers: { "Content-Type": "application/json" }
+    headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+    }
 })
