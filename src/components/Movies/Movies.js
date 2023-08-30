@@ -33,7 +33,7 @@ function Movies({
         } else {
             localStorage.setItem('movies', JSON.stringify(movies)) // '[]'
         }
-    }, [])
+    }, [movies])
 
     useEffect(() => {
         setQueryMovies(isChecked ?
