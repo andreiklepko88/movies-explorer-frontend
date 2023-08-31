@@ -1,5 +1,5 @@
 import "./AboutMe.css";
-import profilePhoto from "../../images/pic__photo_pic-resized.jpg";
+import profilePhoto from "../../images/my-photo.jpg";
 import Portfolio from "../Portfolio/Portfolio";
 
 function AboutMe() {
@@ -11,7 +11,7 @@ function AboutMe() {
                 </div>
                 <div className="about-me__profile">
                     <ul className="about-me__profile-list">
-                        <li className="about-me__profile-header"><h2 className="about-me__profile-header-item">Виталий</h2></li>
+                        <li className="about-me__profile-header"><h2 className="about-me__profile-header-item">Андрей</h2></li>
                         <li className="about-me__profile-subtitle"><span className="about-me__profile-subtitle-item">Фронтенд-разработчик, 35 лет</span></li>
                         <li className="about-me__profile-description"><p className="about-me__profile-description-item">
                         Я родился и живу в Москве, закончил институт по инженерной специальности.
