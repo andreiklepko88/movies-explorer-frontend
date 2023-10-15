@@ -8,9 +8,9 @@ class MainApi {
 
     _handleResponse(res) {
         if (res.ok) {
-        return res.json();
+            return res.json();
         }
-        return Promise.reject(`Ошибка: ${res.status}`)
+        return Promise.reject(res);
     };
 
     register(name, email, password) {
@@ -19,8 +19,8 @@ class MainApi {
             headers: this._headers,
             body: JSON.stringify({
                 name,
-                password,
-                email
+                email,
+                password
             }),
             credentials: 'include',
         })
@@ -32,8 +32,8 @@ class MainApi {
             method: httpMethods.post,
             headers: this._headers,
             body: JSON.stringify({
-                password,
-                email
+                email,
+                password
             }),
             credentials: 'include',
         })
@@ -62,51 +62,28 @@ class MainApi {
 
     getUserData() {
         return fetch(`${this._baseUrl}/users/me`, {
-          method: httpMethods.get,
-          headers: this._headers,
-          credentials: 'include',
+            method: httpMethods.get,
+            headers: this._headers,
+            credentials: 'include',
         })
-          .then(this._handleResponse);
+            .then(this._handleResponse);
     }
 
-    editProfile({ name, email }) {
+    editProfile(name, email) {
         return fetch(`${this._baseUrl}/users/me`, {
-          method: httpMethods.patch,
-          headers: this._headers,
-          body: JSON.stringify({ name, email }),
-          credentials: 'include',
+            method: httpMethods.patch,
+            headers: this._headers,
+            body: JSON.stringify({ name, email }),
+            credentials: 'include',
         })
-          .then(this._handleResponse);
+            .then(this._handleResponse);
     };
 
-    saveMovie(
-        country,
-        director,
-        duration,
-        year,
-        description,
-        image,
-        trailerLink,
-        thumbnail,
-        movieId,
-        nameRU,
-        nameEN,) {
+    saveMovie(movie) {
         return fetch(`${this._baseUrl}/movies`, {
             method: httpMethods.post,
             headers: this._headers,
-            body: JSON.stringify({
-                country,
-                director,
-                duration,
-                year,
-                description,
-                image,
-                trailerLink,
-                thumbnail,
-                movieId,
-                nameRU,
-                nameEN,
-            }),
+            body: JSON.stringify(movie),
             credentials: 'include',
         })
             .then(this._handleResponse)
@@ -114,56 +91,26 @@ class MainApi {
 
     getMovies() {
         return fetch(`${this._baseUrl}/movies`, {
-          method: httpMethods.get,
-          headers: this._headers,
-          credentials: 'include',
+            method: httpMethods.get,
+            headers: this._headers,
+            credentials: 'include',
         })
-          .then(this._handleResponse);
-      };
-    
+            .then(this._handleResponse);
+    };
+
     deleteMovie(id) {
         return fetch(`${this._baseUrl}/movies/${id}`, {
-          method: httpMethods.delete,
-          headers: this._headers,
-          credentials: 'include',
+            method: httpMethods.delete,
+            headers: this._headers,
+            credentials: 'include',
         })
-          .then(this._handleResponse);
+            .then(this._handleResponse);
     }
-
-    changeSaveMovieStatus(
-        id,
-        isSaved,         
-        country,
-        director,
-        duration,
-        year,
-        description,
-        image,
-        trailerLink,
-        thumbnail,
-        movieId,
-        nameRU,
-        nameEN,) {
-        return isSaved ?
-          this.saveMovie(        
-            country,
-            director,
-            duration,
-            year,
-            description,
-            image,
-            trailerLink,
-            thumbnail,
-            movieId,
-            nameRU,
-            nameEN,) 
-            : 
-            this.deleteMovie(id)
-      }
-
 }
 
 export const mainApi = new MainApi({
-    baseUrl: 'http://localhost:3000',
-    headers: {"Content-Type": "application/json"}
-  })
+    baseUrl: 'https://api.bitfilms-andreikodev.nomoreparties.sbs',
+    headers: {
+        "Content-Type": "application/json",
+    }
+})

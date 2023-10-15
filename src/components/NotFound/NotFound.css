@@ -37,7 +37,7 @@
     font-weight: 400;
 }
 
-.not-found__link {
+.not-found__button {
     margin: 0;
     padding: 0;
     text-decoration: none;
@@ -49,9 +49,10 @@
     font-size: 14px;
     line-height: 1.21;
     margin-top: 184px;
+    background-color: #FFF;
 }
 
-.not-found__link:hover {
+.not-found__button:hover {
     cursor: pointer;
     opacity: 0.6;
     text-decoration: underline;

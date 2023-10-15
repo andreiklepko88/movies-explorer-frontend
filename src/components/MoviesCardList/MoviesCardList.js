@@ -1,38 +1,72 @@
 import "./MoviesCardList.css";
 import MoviesCard from "../MoviesCard/MoviesCard";
-import savedMovieLogo from "../../images/saved-movie-logo.svg";
-import unsavedMovieLogo from "../../images/unsaved-movie-logo.svg";
-import pictureOne from "../../images/images for cards/card_pic_1.jpg";
-import pictureTwo from "../../images/images for cards/card_pic_2.jpg";
-import pictureThree from "../../images/images for cards/card_pic_3.jpg";
-import pictureFour from "../../images/images for cards/card_pic_4.jpg";
-import pictureFive from "../../images/images for cards/card_pic_5.jpg";
-import pictureSix from "../../images/images for cards/card_pic_6.jpg";
-import pictureSeven from "../../images/images for cards/card_pic_7.jpg";
-import pictureEight from "../../images/images for cards/card_pic_8.jpg";
-import pictureNine from "../../images/images for cards/card_pic_9.jpg";
-import pictureTen from "../../images/images for cards/card_pic_10.jpg";
-import pictureEleven from "../../images/images for cards/card_pic_11.jpg";
-import pictureTwelve from "../../images/images for cards/card_pic_12.jpg";
+import { useMediaQuery } from "../../hooks/useMediaQuery";
+import { useEffect, useState } from "react";
+import { cardCounts, minWidth } from "../../constants/constants";
 
-function MoviesCardList() {
+function MoviesCardList({ savedMovies, movies, deleteMovie, saveMovie, queryMovies,
+    setQueryMovies, isChecked, isLoading, setMovies, query, movieError }) {
+
+
+    const isDesktop = useMediaQuery(minWidth.minDesktop);
+    const isTablet = useMediaQuery(minWidth.minTablet);
+
+    const cardColumnCount = isDesktop
+        ? cardCounts.LG_ROW_CARD_COUNT
+        : isTablet
+            ? cardCounts.MD_ROW_CARD_COUNT
+            : cardCounts.SM_ROW_CARD_COUNT;
+
+    const initialCardCount = isDesktop
+        ? cardCounts.LG_INITIAL_CARD_COUNT
+        : isTablet
+            ? cardCounts.MD_INITIAL_CARD_COUNT
+            : cardCounts.SM_INITIAL_CARD_COUNT;
+
+    const [visibleCardCount, setVisibleCardCount] = useState(
+        initialCardCount
+    );
+
+    const roundedVisibleCardCount =
+        Math.floor(visibleCardCount / cardColumnCount) * cardColumnCount;
+
+    const handleClick = () => {
+        calculateCardCount();
+    };
+
+    useEffect(() => {
+        setVisibleCardCount(initialCardCount);
+    }, [initialCardCount])
+
+    const calculateCardCount = () => {
+        if (isDesktop) {
+            return setVisibleCardCount(visibleCardCount + cardCounts.LG_ROW_CARD_COUNT);
+        }
+
+        if (isTablet) {
+            return setVisibleCardCount(visibleCardCount + cardCounts.MD_ROW_CARD_COUNT);
+        }
+
+        setVisibleCardCount(visibleCardCount + cardCounts.SM_ROW_CARD_COUNT + 1);
+    };
+
     return (
         <section className="movies">
             <ul className="movies__list">
-                <MoviesCard movieName={"33 слова о дизайне"} movieDuration={"1ч 47м"} buttonLogo={unsavedMovieLogo} moviePicture={pictureOne} />
-                <MoviesCard movieName={"33 слова о дизайне"} movieDuration={"1ч 47м"} buttonLogo={unsavedMovieLogo} moviePicture={pictureTwo} />
-                <MoviesCard movieName={"33 слова о дизайне"} movieDuration={"1ч 47м"} buttonLogo={savedMovieLogo} moviePicture={pictureThree} />
-                <MoviesCard movieName={"33 слова о дизайне"} movieDuration={"1ч 47м"} buttonLogo={unsavedMovieLogo} moviePicture={pictureFour} />
-                <MoviesCard movieName={"33 слова о дизайне"} movieDuration={"1ч 47м"} buttonLogo={savedMovieLogo} moviePicture={pictureFive} />
-                <MoviesCard movieName={"33 слова о дизайне"} movieDuration={"1ч 47м"} buttonLogo={unsavedMovieLogo} moviePicture={pictureSix} />
-                <MoviesCard movieName={"33 слова о дизайне"} movieDuration={"1ч 47м"} buttonLogo={unsavedMovieLogo} moviePicture={pictureSeven} />
-                <MoviesCard movieName={"33 слова о дизайне"} movieDuration={"1ч 47м"} buttonLogo={unsavedMovieLogo} moviePicture={pictureEight} />
-                <MoviesCard movieName={"33 слова о дизайне"} movieDuration={"1ч 47м"} buttonLogo={unsavedMovieLogo} moviePicture={pictureNine} />
-                <MoviesCard movieName={"33 слова о дизайне"} movieDuration={"1ч 47м"} buttonLogo={savedMovieLogo} moviePicture={pictureTen} />
-                <MoviesCard movieName={"33 слова о дизайне"} movieDuration={"1ч 47м"} buttonLogo={unsavedMovieLogo} moviePicture={pictureEleven} />
-                <MoviesCard movieName={"33 слова о дизайне"} movieDuration={"1ч 47м"} buttonLogo={unsavedMovieLogo} moviePicture={pictureTwelve} />
+                {query && queryMovies?.slice(0, roundedVisibleCardCount).map((movie) =>
+                    <MoviesCard
+                        key={movie.id}
+                        movie={movie}
+                        savedMovies={savedMovies}
+                        deleteMovie={deleteMovie}
+                        saveMovie={saveMovie}
+                    />
+                )
+                }
             </ul>
-            <button className="movies__loader-button" type="button" aria-label="загрузить больше фильмов">Ещё</button>
+            {query && movieError && <span>Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз.</span>}
+            {query && !isLoading && !queryMovies.length && <span>Ничего не найдено</span>}
+            {queryMovies.length > roundedVisibleCardCount && <button className="movies__loader-button" type="button" onClick={handleClick} aria-label="загрузить больше фильмов">Ещё</button>}
         </section>
     )
 }

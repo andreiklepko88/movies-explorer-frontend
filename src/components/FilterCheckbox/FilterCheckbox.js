@@ -1,11 +1,11 @@
 import "./FilterCheckbox.css";
 
-function FilterCheckbox({ handleCheckbox }) {
+function FilterCheckbox({ handleCheckbox, isChecked=false }) {
 
     return (
         <div className="checkbox">
-            <input className="checkbox-button" type="checkbox" id="switch" onChange={handleCheckbox} />
-            <label className="checkbox-label" for="switch"/>
+            <input className="checkbox-button" type="checkbox" id="switch" onChange={handleCheckbox} checked={isChecked} />
+            <label className="checkbox-label" htmlFor="switch"/>
             <span className="checkbox-text">Короткометражки</span>
         </div>
     )
